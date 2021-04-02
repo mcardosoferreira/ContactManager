@@ -66,17 +66,13 @@ namespace ContactManager.Controllers
             return View(contact);
         }
         public ActionResult Edit(int id)
-        {
-            if (id == null)
-            {
-                return BadRequest("id nulo");
-            }
+        {            
             var contactResult = _repository.GetContactById(id);
             if (contactResult == null)
             {
                 return BadRequest("Contato não encontrado.");
             }
-            var contactDto = _mapper.Map<ContactDto>(contactResult);
+            var contactDto = _mapper.Map<ContactDto>(contactResult);            
             return View(contactDto);
         }
 
@@ -115,8 +111,21 @@ namespace ContactManager.Controllers
             return BadRequest("Contato não atualizado.");
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public ActionResult Delete(int id)
+        {
+
+            var contact = _repository.GetContactById(id);
+            if (contact == null)
+            {
+                return BadRequest("Contato não encontrado.");
+            }
+            var contactDto = _mapper.Map<ContactDto>(contact);
+
+            return View(contactDto);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id)
         {
             var contact = _repository.GetContactById(id);
             if (contact == null)
@@ -127,9 +136,22 @@ namespace ContactManager.Controllers
             _repository.Delete(contact);
             if (_repository.SaveChanges())
             {
-                return Ok("Contado deletado.");
+                return RedirectToAction("Index");
             }
             return BadRequest("Contado não foi deletado.");
+        }
+
+        public ActionResult Details(int id)
+        {
+
+            var contact = _repository.GetContactById(id);
+            if (contact == null)
+            {
+                return BadRequest("Contato não encontrado.");
+            }
+
+            var contactDto = _mapper.Map<ContactDto>(contact);
+            return View(contactDto);
         }
     }
 }
