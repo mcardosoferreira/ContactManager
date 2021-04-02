@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ContactManager.Migrations
 {
     [DbContext(typeof(ContactManagerContext))]
-    [Migration("20210402182726_init")]
-    partial class init
+    [Migration("20210402192418_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,16 +24,16 @@ namespace ContactManager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Bairro")
+                    b.Property<string>("City")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Cidade")
+                    b.Property<string>("Complement")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Complemento")
+                    b.Property<string>("Neighborhood")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Estado")
+                    b.Property<string>("State")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -44,42 +44,42 @@ namespace ContactManager.Migrations
                         new
                         {
                             Id = 1,
-                            Bairro = "Castelo Branco",
-                            Cidade = "salvador",
-                            Complemento = "casa 29",
-                            Estado = "bahia"
+                            City = "salvador",
+                            Complement = "casa 29",
+                            Neighborhood = "Castelo Branco",
+                            State = "bahia"
                         },
                         new
                         {
                             Id = 2,
-                            Bairro = "Stiep",
-                            Cidade = "salvador",
-                            Complemento = "casa 29",
-                            Estado = "bahia"
+                            City = "salvador",
+                            Complement = "casa 29",
+                            Neighborhood = "Stiep",
+                            State = "bahia"
                         },
                         new
                         {
                             Id = 3,
-                            Bairro = "Rio Vermelho",
-                            Cidade = "salvador",
-                            Complemento = "casa 29",
-                            Estado = "bahia"
+                            City = "salvador",
+                            Complement = "casa 29",
+                            Neighborhood = "Rio Vermelho",
+                            State = "bahia"
                         },
                         new
                         {
                             Id = 4,
-                            Bairro = "Federação",
-                            Cidade = "salvador",
-                            Complemento = "casa 29",
-                            Estado = "bahia"
+                            City = "salvador",
+                            Complement = "casa 29",
+                            Neighborhood = "Federação",
+                            State = "bahia"
                         },
                         new
                         {
                             Id = 5,
-                            Bairro = "Barra",
-                            Cidade = "salvador",
-                            Complemento = "casa 29",
-                            Estado = "bahia"
+                            City = "salvador",
+                            Complement = "casa 29",
+                            Neighborhood = "Barra",
+                            State = "bahia"
                         });
                 });
 
@@ -89,7 +89,7 @@ namespace ContactManager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("AddressId")
+                    b.Property<int?>("AddressId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("BirthDate")
@@ -232,9 +232,7 @@ namespace ContactManager.Migrations
                 {
                     b.HasOne("ContactManager.Models.Address", "Address")
                         .WithOne("Contact")
-                        .HasForeignKey("ContactManager.Models.Contact", "AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ContactManager.Models.Contact", "AddressId");
                 });
 
             modelBuilder.Entity("ContactManager.Models.Telephone", b =>

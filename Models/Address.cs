@@ -4,20 +4,20 @@
     {
         public Address() { }
 
-        public Address(int id, string bairro, string cidade, string estado, string complemento)
+        public Address(int id, string Neighborhood, string city, string state, string complement)
         {
             this.Id = id;
-            this.Bairro = bairro;
-            this.Cidade = cidade;
-            this.Estado = estado;
-            this.Complemento = complemento;
+            this.Neighborhood = Neighborhood;
+            this.City = city;
+            this.State = state;
+            this.Complement = complement;
         }
 
         public int Id { get; set; }
-        public string Bairro { get; set; }
-        public string Cidade { get; set; }
-        public string Estado { get; set; }
-        public string Complemento { get; set; }
+        public string Neighborhood { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string Complement { get; set; }
 
         public Contact Contact { get; set; }
     }

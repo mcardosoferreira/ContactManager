@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ContactManager.Migrations
 {
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,10 +13,10 @@ namespace ContactManager.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Bairro = table.Column<string>(nullable: true),
-                    Cidade = table.Column<string>(nullable: true),
-                    Estado = table.Column<string>(nullable: true),
-                    Complemento = table.Column<string>(nullable: true)
+                    Neighborhood = table.Column<string>(nullable: true),
+                    City = table.Column<string>(nullable: true),
+                    State = table.Column<string>(nullable: true),
+                    Complement = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -33,7 +33,7 @@ namespace ContactManager.Migrations
                     LastName = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: true),
                     BirthDate = table.Column<DateTime>(nullable: false),
-                    AddressId = table.Column<int>(nullable: false)
+                    AddressId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -43,7 +43,7 @@ namespace ContactManager.Migrations
                         column: x => x.AddressId,
                         principalTable: "Addresses",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -68,28 +68,28 @@ namespace ContactManager.Migrations
 
             migrationBuilder.InsertData(
                 table: "Addresses",
-                columns: new[] { "Id", "Bairro", "Cidade", "Complemento", "Estado" },
-                values: new object[] { 1, "Castelo Branco", "salvador", "casa 29", "bahia" });
+                columns: new[] { "Id", "City", "Complement", "Neighborhood", "State" },
+                values: new object[] { 1, "salvador", "casa 29", "Castelo Branco", "bahia" });
 
             migrationBuilder.InsertData(
                 table: "Addresses",
-                columns: new[] { "Id", "Bairro", "Cidade", "Complemento", "Estado" },
-                values: new object[] { 2, "Stiep", "salvador", "casa 29", "bahia" });
+                columns: new[] { "Id", "City", "Complement", "Neighborhood", "State" },
+                values: new object[] { 2, "salvador", "casa 29", "Stiep", "bahia" });
 
             migrationBuilder.InsertData(
                 table: "Addresses",
-                columns: new[] { "Id", "Bairro", "Cidade", "Complemento", "Estado" },
-                values: new object[] { 3, "Rio Vermelho", "salvador", "casa 29", "bahia" });
+                columns: new[] { "Id", "City", "Complement", "Neighborhood", "State" },
+                values: new object[] { 3, "salvador", "casa 29", "Rio Vermelho", "bahia" });
 
             migrationBuilder.InsertData(
                 table: "Addresses",
-                columns: new[] { "Id", "Bairro", "Cidade", "Complemento", "Estado" },
-                values: new object[] { 4, "Federação", "salvador", "casa 29", "bahia" });
+                columns: new[] { "Id", "City", "Complement", "Neighborhood", "State" },
+                values: new object[] { 4, "salvador", "casa 29", "Federação", "bahia" });
 
             migrationBuilder.InsertData(
                 table: "Addresses",
-                columns: new[] { "Id", "Bairro", "Cidade", "Complemento", "Estado" },
-                values: new object[] { 5, "Barra", "salvador", "casa 29", "bahia" });
+                columns: new[] { "Id", "City", "Complement", "Neighborhood", "State" },
+                values: new object[] { 5, "salvador", "casa 29", "Barra", "bahia" });
 
             migrationBuilder.InsertData(
                 table: "Contacts",

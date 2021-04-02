@@ -8,7 +8,7 @@ namespace ContactManager.Models
     public class Contact
     {
         public Contact(){ }
-        public Contact(int id, string name, string lastName, string email, DateTime birthDate, int addressId)
+        public Contact(int id, string name, string lastName, string email, DateTime birthDate, int? addressId)
         {
             Id = id;
             Name = name;
@@ -24,7 +24,7 @@ namespace ContactManager.Models
         public string Email { get; set; }
         public DateTime BirthDate { get; set; }
 
-        public int AddressId { get; set; }
+        public int? AddressId { get; set; }
         public Address Address { get; set; }
 
         public virtual ICollection<Telephone> Telephones { get; set; }

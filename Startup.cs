@@ -1,3 +1,4 @@
+using AutoMapper;
 using ContactManager.Data.Context;
 using ContactManager.Data.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -6,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace ContactManager
 {
@@ -24,6 +26,8 @@ namespace ContactManager
             services.AddControllersWithViews();
             services.AddControllers()
                    .AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddDbContext<ContactManagerContext>(
                     context => context.UseSqlite(this.Configuration.GetConnectionString("Default"))
