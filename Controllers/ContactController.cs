@@ -6,10 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace ContactManager.Controllers
-{    
+{
     public class ContactController : Controller
     {
 
@@ -46,32 +47,54 @@ namespace ContactManager.Controllers
             var contactResult = _mapper.Map<ContactDto>(contact);
             return Ok(contactResult);
         }
+        public ActionResult Create()
+        {
+            var model = new ContactDto();
+            return View(model);
+        }
 
         [HttpPost]
-        public IActionResult Post([FromBody]ContactDto contact)
+        public ActionResult Create(ContactDto contact)
         {
             var contactResult = _mapper.Map<Contact>(contact);
 
             _repository.Add(contactResult);
             if (_repository.SaveChanges())
             {
-                return Ok(contactResult);
+                return RedirectToAction("Index");
             }
-            return BadRequest("Contato não adicionado.");
+            return View(contact);
         }
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]ContactDto contact)
+        public ActionResult Edit(int id)
         {
+            if (id == null)
+            {
+                return BadRequest("id nulo");
+            }
             var contactResult = _repository.GetContactById(id);
+            if (contactResult == null)
+            {
+                return BadRequest("Contato não encontrado.");
+            }
+            var contactDto = _mapper.Map<ContactDto>(contactResult);
+            return View(contactDto);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(ContactDto contactDto)
+        {
+            var contactResult = _repository.GetContactById(contactDto.Id);
             if(contactResult == null)
             {
                 return BadRequest("Contato não encontrado.");
             }
 
+            var contact = _mapper.Map<Contact>(contactDto);
+
             _repository.Update(contact);
              if(_repository.SaveChanges())
             {
-                return Ok(contact);
+                return RedirectToAction("Index");
             }
             return BadRequest("Contato não atualizado.");
         }
