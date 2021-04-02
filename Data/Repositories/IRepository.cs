@@ -1,9 +1,8 @@
-﻿using System;
+﻿using ContactManager.Models;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace ContactManager.Data
+namespace ContactManager.Data.Repositories
 {
     public interface IRepository
     {
@@ -11,5 +10,10 @@ namespace ContactManager.Data
         void Update<T>(T entity) where T : class;
         void Delete<T>(T entity) where T : class;
         bool SaveChanges();
+
+        //Contacts
+        Task<IEnumerable<Contact>> GetAllContactsAsync();
+        Contact GetContactById(int contactId);
+
     }
 }
