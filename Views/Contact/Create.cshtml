@@ -9,92 +9,103 @@
 @using (Html.BeginForm("Create", "Contact", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-<div class="form-horizontal">
-    <div class="form-group">
-        @Html.LabelFor(m => m.Name, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Name,
-                               new { @class = "form-control", @placeholder = "Nome" })
+    <div class="form-horizontal">
+        <div class="form-group">
+            <p>@ViewBag.ErrorMessage</p>
+            @Html.LabelFor(m => m.Name, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Name,
+                                   new { @class = "form-control", @placeholder = "Nome", @required = "required" })
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.LastName, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.LastName,
-                               new { @class = "form-control", @placeholder = "SobreNome" })
+        <div class="form-group">
+            @Html.LabelFor(m => m.LastName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.LastName,
+                                   new { @class = "form-control", @placeholder = "SobreNome" })
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Email, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Email,
-                               new { @class = "form-control", @placeholder = "E-mail" })
+        <div class="form-group">
+            @Html.LabelFor(m => m.Email, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Email,
+                                   new { @class = "form-control", @placeholder = "E-mail", @required = "required", @type = "email" })
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.BirthDate, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.BirthDate,
-                               new { @class = "form-control", @placeholder = "Data de nascimento" })
+        <div class="form-group">
+            @Html.LabelFor(m => m.BirthDate, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.BirthDate,
+                                   new { @class = "form-control", @placeholder = "Data de nascimento" })
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Address.Neighborhood, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Address.Neighborhood,
-                      new { @class = "form-control" })
+        <div class="form-group">
+            @Html.LabelFor(m => m.Address.Neighborhood, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Address.Neighborhood,
+                          new { @class = "form-control" })
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Address.City, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Address.City,
-                      new { @class = "form-control" })
+        <div class="form-group">
+            @Html.LabelFor(m => m.Address.City, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Address.City,
+                          new { @class = "form-control" })
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Address.State, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Address.State,
-                      new { @class = "form-control" })
+        <div class="form-group">
+            @Html.LabelFor(m => m.Address.State, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Address.State,
+                          new { @class = "form-control" })
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Address.Complement, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Address.Complement,
-                      new { @class = "form-control" })
+        <div class="form-group">
+            @Html.LabelFor(m => m.Address.Complement, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Address.Complement,
+                          new { @class = "form-control" })
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Telephones, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @if (Model.Telephones == null)
-            {
-                @Html.TextBoxFor(m => m.Telephones[0].Number,
-                       new { @class = "form-control control-label col-md-2" })
-            }
-            else
-            {
-                @for (var i = 0; i < Model.Telephones.Count(); i++)
+        <div class="form-group">
+            @Html.LabelFor(m => m.Telephones, new { @class = "control-label col-md-2" })
+            <div class="col-md-10" id="formNumber">
+                @if (Model.Telephones == null)
                 {
-                    @Html.TextBoxFor(m => m.Telephones[i].Number,
-                               new { @class = "form-control control-label col-md-2" })
+                    @Html.TextBoxFor(m => m.Telephones[0].Number,
+                           new { @class = "form-control control-label col-md-2" })
                 }
-            }    
-            <p>
-                @Html.ActionLink("Incluir novo telefone", "Create", "Contact", new { @class = "btn btn-success" })
-            </p>
+                else
+                {
+                    @for (var i = 0; i < Model.Telephones.Count(); i++)
+                    {
+                        @Html.TextBoxFor(m => m.Telephones[i].Number,
+                                   new { @class = "form-control control-label col-md-2" })
+                    }
+                }
+                <p>
+                    <input type="submit" name="submitButton" value="New Telephone" formnovalidate />
+                </p>
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Salvar Contato" class="btn btn-success" />
-            @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-danger" })
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" name="submitButton" value="Salvar Contato" class="btn btn-success" />
+                @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-danger" })
+            </div>
         </div>
     </div>
-</div>
 }
 <div>
 </div>
+<script type="text/javascript" src="../../Scripts/jquery-1.5.1.min.js"></script>
+<script type="text/javascript">
+// <![CDATA[
+        function addRow() {
+            //copy the table row and clear the value of the input, then append the row to the end of the table
+            $("#formNumber:first").clone().find("input").each(function () {
+                $(this).val('');
+            }).end().appendTo("#formNumber");
+        }
+// ]]></script>

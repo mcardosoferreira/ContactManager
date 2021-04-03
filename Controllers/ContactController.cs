@@ -3,10 +3,7 @@ using ContactManager.Data.Repositories;
 using ContactManager.Dtos;
 using ContactManager.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace ContactManager.Controllers
@@ -17,129 +14,146 @@ namespace ContactManager.Controllers
         public readonly IRepository _repository;
         public readonly IMapper _mapper;
 
-        public ContactController(IRepository repository, IMapper mapper) {
-            _mapper = mapper;
-            _repository = repository;
+        public ContactController(IRepository repository, IMapper mapper)
+        {
+            this._mapper = mapper;
+            this._repository = repository;
         }
 
         public async Task<IActionResult> Index(string searchString, int tipoBusca)
         {
-            var result = await _repository.GetAllContactsAsync();
-            if (!String.IsNullOrEmpty(searchString) && tipoBusca == 1)
+            IEnumerable<Contact> result = await this._repository.GetAllContactsAsync();
+            if (!string.IsNullOrEmpty(searchString) && tipoBusca == 1)
             {
-                result = await _repository.GetContactsByNameAsync(searchString);
+                result = await this._repository.GetContactsByNameAsync(searchString);
             }
-            else if(!String.IsNullOrEmpty(searchString) && tipoBusca == 2)
+            else if (!string.IsNullOrEmpty(searchString) && tipoBusca == 2)
             {
-                result = await _repository.GetContactsByPhoneAsync(searchString);
+                result = await this._repository.GetContactsByPhoneAsync(searchString);
             }
-            var contactResult = _mapper.Map<IEnumerable<ContactDto>>(result);
-            return View(contactResult);
-        }        
+            IEnumerable<ContactDto> contactResult = this._mapper.Map<IEnumerable<ContactDto>>(result);
+            return this.View(contactResult);
+        }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var contact = _repository.GetContactById(id);
+            Contact contact = this._repository.GetContactById(id);
             if (contact == null)
-                return BadRequest("Contato não encontrado.");
+            {
+                return this.BadRequest("Contato não encontrado.");
+            }
 
-            var contactResult = _mapper.Map<ContactDto>(contact);
-            return Ok(contactResult);
+            ContactDto contactResult = this._mapper.Map<ContactDto>(contact);
+            return this.Ok(contactResult);
         }
-        public ActionResult Create()
+        public ActionResult Create(string[] DynamicTextBox)
         {
             var model = new ContactDto();
-            return View(model);
+            return this.View(model);
         }
-        
+
 
         [HttpPost]
-        public ActionResult Create(ContactDto contact)
+        public ActionResult Create(ContactDto contact, string submitButton)
         {
-            var contactResult = _mapper.Map<Contact>(contact);
+            Contact contactResult = this._mapper.Map<Contact>(contact);
 
-            _repository.Add(contactResult);
-            if (_repository.SaveChanges())
+            switch (submitButton)
             {
-                return RedirectToAction("Index");
+                case "New Telephone":
+                    {
+                        contact.Telephones.Add(null);
+                        return this.View(contact);
+                    }
+                case "Salvar Contato":
+                    {
+                        this._repository.Add(contactResult);
+                        if (this._repository.SaveChanges())
+                        {
+                            return this.RedirectToAction("Index");
+                        }
+                        break;
+                    }
             }
-            return View(contact);
+
+            return this.View(contact);
         }
+
         public ActionResult Edit(int id)
-        {            
-            var contactResult = _repository.GetContactById(id);
+        {
+            Contact contactResult = this._repository.GetContactById(id);
             if (contactResult == null)
             {
-                return BadRequest("Contato não encontrado.");
+                return this.BadRequest("Contato não encontrado.");
             }
-            var contactDto = _mapper.Map<ContactDto>(contactResult);            
-            return View(contactDto);
+            ContactDto contactDto = this._mapper.Map<ContactDto>(contactResult);
+            return this.View(contactDto);
         }
-                
+
         [HttpPost]
         public ActionResult Edit(ContactDto contactDto)
         {
-            var contactResult = _repository.GetContactById(contactDto.Id);
-            if(contactResult == null)
+            Contact contactResult = this._repository.GetContactById(contactDto.Id);
+            if (contactResult == null)
             {
-                return BadRequest("Contato não encontrado.");
+                return this.BadRequest("Contato não encontrado.");
             }
 
-            var contact = _mapper.Map<Contact>(contactDto);
+            Contact contact = this._mapper.Map<Contact>(contactDto);
 
-            _repository.Update(contact);
-             if(_repository.SaveChanges())
+            this._repository.Update(contact);
+            if (this._repository.SaveChanges())
             {
-                return RedirectToAction("Index");
+                return this.RedirectToAction("Index");
             }
-            return BadRequest("Contato não atualizado.");
-        }      
+            return this.BadRequest("Contato não atualizado.");
+        }
 
         public ActionResult Delete(int id)
         {
 
-            var contact = _repository.GetContactById(id);
+            Contact contact = this._repository.GetContactById(id);
             if (contact == null)
             {
-                return BadRequest("Contato não encontrado.");
+                return this.BadRequest("Contato não encontrado.");
             }
-            var contactDto = _mapper.Map<ContactDto>(contact);
+            ContactDto contactDto = this._mapper.Map<ContactDto>(contact);
 
-            return View(contactDto);
+            return this.View(contactDto);
         }
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            var contact = _repository.GetContactById(id);
+            Contact contact = this._repository.GetContactById(id);
             if (contact == null)
             {
-                return BadRequest("Contato não encontrado.");
+                return this.BadRequest("Contato não encontrado.");
             }
 
-            _repository.Delete(contact);
-            if (_repository.SaveChanges())
+            this._repository.Delete(contact);
+            if (this._repository.SaveChanges())
             {
-                return RedirectToAction("Index");
+                return this.RedirectToAction("Index");
             }
-            return BadRequest("Contado não foi deletado.");
+            return this.BadRequest("Contado não foi deletado.");
         }
 
         public ActionResult Details(int id)
-        {            
+        {
 
-            var contact = _repository.GetContactById(id);
+            Contact contact = this._repository.GetContactById(id);
             if (contact == null)
             {
-                return BadRequest("Contato não encontrado.");
-            }   
+                return this.BadRequest("Contato não encontrado.");
+            }
 
-            var contactDto = _mapper.Map<ContactDto>(contact);           
-            
-            
+            ContactDto contactDto = this._mapper.Map<ContactDto>(contact);
 
-            return View(contactDto);
+
+
+            return this.View(contactDto);
         }
     }
 }
