@@ -15,7 +15,6 @@
         <div class="col-md-10">
             @Html.TextBoxFor(m => m.Name,
                                new { @class = "form-control", @placeholder = "Nome" })
-            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group">
@@ -23,7 +22,6 @@
         <div class="col-md-10">
             @Html.TextBoxFor(m => m.LastName,
                                new { @class = "form-control", @placeholder = "SobreNome" })
-            @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group">
@@ -31,7 +29,6 @@
         <div class="col-md-10">
             @Html.TextBoxFor(m => m.Email,
                                new { @class = "form-control", @placeholder = "E-mail" })
-            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group">
@@ -39,9 +36,57 @@
         <div class="col-md-10">
             @Html.TextBoxFor(m => m.BirthDate,
                                new { @class = "form-control", @placeholder = "Data de nascimento" })
-            @Html.ValidationMessageFor(m => m.BirthDate, "", new { @class = "text-danger" })
         </div>
-    </div>    
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Address.Neighborhood, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Address.Neighborhood,
+                      new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Address.City, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Address.City,
+                      new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Address.State, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Address.State,
+                      new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Address.Complement, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Address.Complement,
+                      new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Telephones, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @if (Model.Telephones == null)
+            {
+                @Html.TextBoxFor(m => m.Telephones[0].Number,
+                       new { @class = "form-control control-label col-md-2" })
+            }
+            else
+            {
+                @for (var i = 0; i < Model.Telephones.Count(); i++)
+                {
+                    @Html.TextBoxFor(m => m.Telephones[i].Number,
+                               new { @class = "form-control control-label col-md-2" })
+                }
+            }    
+            <p>
+                @Html.ActionLink("Incluir novo telefone", "Create", "Contact", new { @class = "btn btn-success" })
+            </p>
+        </div>
+    </div>
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">

@@ -14,6 +14,15 @@ namespace ContactManager.Data.Repositories
         //Contacts
         Task<IEnumerable<Contact>> GetAllContactsAsync();
         Contact GetContactById(int contactId);
+        Task<IEnumerable<Contact>> GetContactsByNameAsync(string Name);
+        Task<IEnumerable<Contact>> GetContactsByPhoneAsync(string Number);
+
+        //Address
+        Task<IEnumerable<Address>> GetAllAddressesAsync();
+        Address GetAddressById(int addressId);
+
+        //Telephone
+        Task<IEnumerable<Telephone>> GetAllTelephonesAsync();
 
     }
 }

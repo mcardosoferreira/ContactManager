@@ -14,6 +14,6 @@ namespace ContactManager.Dtos
         public int? AddressId { get; set; }
         public AddressDto Address { get; set; }
 
-        public virtual ICollection<TelephoneDto> Telephones { get; set; }
+        public virtual IList<TelephoneDto> Telephones { get; set; }
     }
 }

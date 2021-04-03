@@ -27,7 +27,7 @@ namespace ContactManager.Models
         public int? AddressId { get; set; }
         public Address Address { get; set; }
 
-        public virtual ICollection<Telephone> Telephones { get; set; }
+        public virtual IList<Telephone> Telephones { get; set; }
 
     }
 }

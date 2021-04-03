@@ -7,12 +7,11 @@
 <h1>Editar Contato</h1>
 
 @using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-
+{    
 <div class="form-horizontal">
 
     @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.Address.Id)    
 
     <div class="form-group">
         @Html.LabelFor(m => m.Name, new { @class = "control-label col-md-2" })
@@ -45,6 +44,45 @@
             @Html.ValidationMessageFor(m => m.BirthDate, "", new { @class = "text-danger" })
         </div>
     </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Address.Neighborhood, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Address.Neighborhood,
+                      new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Address.City, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Address.City,
+                      new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Address.State, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Address.State,
+                      new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Address.Complement, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Address.Complement,
+                      new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Telephones, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @for (var i = 0; i < Model.Telephones.Count(); i++)
+            {
+                @Html.HiddenFor(m => m.Telephones[i].Id)
+                @Html.TextBoxFor(m => Model.Telephones[i].Number, new { @class = "form-control control-label col-md-2" })
+                @Html.ValidationMessageFor(m => m.Telephones, "", new { @class = "text-danger control-label col-md-2" })
+            }
+        </div>
+    </div>   
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">

@@ -51,10 +51,63 @@ namespace ContactManager.Data.Repositories
         {
             IQueryable<Contact> query = _context.Contacts;
             query = query.AsNoTracking()
+                        .Include(c => c.Address)
+                        .Include(c => c.Telephones)
                          .OrderBy(contact => contact.Id)
                          .Where(c => c.Id == contactId);
 
             return query.FirstOrDefault();
         }
+        public async Task<IEnumerable<Contact>> GetContactsByNameAsync(string Name)
+        {
+            IQueryable<Contact> query = _context.Contacts;
+
+
+            query = query.AsNoTracking()
+                         .OrderBy(contact => contact.Id)
+                         .Where(a => a.Name.ToUpper().Contains(Name.ToUpper()));
+
+            return await query.ToListAsync();
+        }
+        public async Task<IEnumerable<Contact>> GetContactsByPhoneAsync(string Number)
+        {
+            IQueryable<Contact> query = _context.Contacts;
+
+
+            query = query.AsNoTracking()
+                         .OrderBy(contact => contact.Id)
+                         .Where(a => a.Telephones.Any(t => t.Number.Contains(Number)));
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<IEnumerable<Address>> GetAllAddressesAsync()
+        {
+            IQueryable<Address> query = _context.Addresses;
+
+            query = query.AsNoTracking().OrderBy(Address => Address.Id);
+
+            return await query.ToListAsync();
+        }
+
+        public Address GetAddressById(int addressId)
+        {
+            IQueryable<Address> query = _context.Addresses;
+            query = query.AsNoTracking()
+                         .OrderBy(address => address.Id)
+                         .Where(c => c.Id == addressId);
+
+            return query.FirstOrDefault();
+        }       
+
+        public async Task<IEnumerable<Telephone>> GetAllTelephonesAsync()
+        {
+            IQueryable<Telephone> query = _context.Telephones;
+
+            query = query.AsNoTracking().OrderBy(Address => Address.Id);
+
+            return await query.ToListAsync();
+        }
+        
     }
 }

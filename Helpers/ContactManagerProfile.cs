@@ -13,8 +13,10 @@ namespace ContactManager.Helpers
         public ContactManagerProfile()
         {
             CreateMap<Contact, ContactDto>().ReverseMap();
+            
             CreateMap<Address, AddressDto>().ReverseMap();
-            CreateMap<Telephone, TelephoneDto>().ReverseMap();
+            CreateMap<Telephone, TelephoneDto>();
+            CreateMap<TelephoneDto, Telephone>();
         }
     }
 }

@@ -22,20 +22,20 @@ namespace ContactManager.Controllers
             _repository = repository;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString, int tipoBusca)
         {
             var result = await _repository.GetAllContactsAsync();
+            if (!String.IsNullOrEmpty(searchString) && tipoBusca == 1)
+            {
+                result = await _repository.GetContactsByNameAsync(searchString);
+            }
+            else if(!String.IsNullOrEmpty(searchString) && tipoBusca == 2)
+            {
+                result = await _repository.GetContactsByPhoneAsync(searchString);
+            }
             var contactResult = _mapper.Map<IEnumerable<ContactDto>>(result);
             return View(contactResult);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Get()
-        {
-            var result = await _repository.GetAllContactsAsync();
-            var contactResult = _mapper.Map<IEnumerable<ContactDto>>(result);
-            return Ok(contactResult);
-        }
+        }        
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
@@ -52,6 +52,7 @@ namespace ContactManager.Controllers
             var model = new ContactDto();
             return View(model);
         }
+        
 
         [HttpPost]
         public ActionResult Create(ContactDto contact)
@@ -75,7 +76,7 @@ namespace ContactManager.Controllers
             var contactDto = _mapper.Map<ContactDto>(contactResult);            
             return View(contactDto);
         }
-
+                
         [HttpPost]
         public ActionResult Edit(ContactDto contactDto)
         {
@@ -93,23 +94,7 @@ namespace ContactManager.Controllers
                 return RedirectToAction("Index");
             }
             return BadRequest("Contato não atualizado.");
-        }
-        [HttpPatch("{id}")]
-        public IActionResult Patch(int id, [FromBody]ContactDto contact)
-        {
-            var contactResult = _repository.GetContactById(id);
-            if (contactResult == null)
-            {
-                return BadRequest("Contato não encontrado.");
-            }
-
-            _repository.Update(contact);
-            if (_repository.SaveChanges())
-            {
-                return Ok(contact);
-            }
-            return BadRequest("Contato não atualizado.");
-        }
+        }      
 
         public ActionResult Delete(int id)
         {
@@ -142,15 +127,18 @@ namespace ContactManager.Controllers
         }
 
         public ActionResult Details(int id)
-        {
+        {            
 
             var contact = _repository.GetContactById(id);
             if (contact == null)
             {
                 return BadRequest("Contato não encontrado.");
-            }
+            }   
 
-            var contactDto = _mapper.Map<ContactDto>(contact);
+            var contactDto = _mapper.Map<ContactDto>(contact);           
+            
+            
+
             return View(contactDto);
         }
     }
