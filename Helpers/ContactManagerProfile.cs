@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using ContactManager.Dtos;
 using ContactManager.Models;
 
@@ -12,11 +8,11 @@ namespace ContactManager.Helpers
     {
         public ContactManagerProfile()
         {
-            CreateMap<Contact, ContactDto>().ReverseMap();
-            
-            CreateMap<Address, AddressDto>().ReverseMap();
-            CreateMap<Telephone, TelephoneDto>();
-            CreateMap<TelephoneDto, Telephone>();
+            this.CreateMap<Contact, ContactDto>().ReverseMap();
+
+            this.CreateMap<Address, AddressDto>().ReverseMap();
+            this.CreateMap<Telephone, TelephoneDto>();
+            this.CreateMap<TelephoneDto, Telephone>();
         }
     }
 }

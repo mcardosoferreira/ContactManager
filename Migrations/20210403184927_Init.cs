@@ -32,7 +32,7 @@ namespace ContactManager.Migrations
                     Name = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: true),
-                    BirthDate = table.Column<DateTime>(nullable: false),
+                    BirthDate = table.Column<DateTime>(nullable: true),
                     AddressId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>

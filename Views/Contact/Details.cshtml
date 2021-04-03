@@ -70,7 +70,7 @@
                 {
 
                     @Html.TextBoxFor(m => Model.Telephones[i].Number, new { @class = "form-control control-label col-md-2", @disabled = "disabled" })
-                    @Html.ValidationMessageFor(m => m.Telephones, "", new { @class = "text-danger control-label col-md-2" })
+                    <span class="col-md-2"></span>
                 }
             </div>
         </div>

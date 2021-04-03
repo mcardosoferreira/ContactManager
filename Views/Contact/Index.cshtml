@@ -7,17 +7,16 @@
     @Html.ActionLink("Create New Contact", "Create", "Contact", new { @class = "btn btn-success" })
 </p>
 <form asp-controller="Contact" asp-action="Index">
-    <p>
-        Title: <input type="text" name="SearchString" />
-        <input type="submit" value="Filter" />
-    </p>
     <fieldset data-role="controlgroup">
-
-        <input type="radio" name="TipoBusca" id="radio-choice-v-2a" value="1">
-        <label for="radio-choice-v-2a">Name</label>
-        <input type="radio" name="TipoBusca" id="radio-choice-v-2b" value="2">
-        <label for="radio-choice-v-2b">Telephone</label>
-
+    <span>
+        <input type="text" name="SearchString" />
+        <input type="submit" value="Search" />
+        by: 
+        <input type="radio" name="TypeSearch" id="radio-choice-1" value="1">
+        <label for="radio-choice-1">Name</label>
+        <input type="radio" name="TypeSearch" id="radio-choice-2" value="2">
+        <label for="radio-choice-2">Telephone</label>
+    </span>
     </fieldset>
 </form>
 <table class="table ">

@@ -4,6 +4,7 @@ using ContactManager.Dtos;
 using ContactManager.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ContactManager.Controllers
@@ -20,14 +21,14 @@ namespace ContactManager.Controllers
             this._repository = repository;
         }
 
-        public async Task<IActionResult> Index(string searchString, int tipoBusca)
+        public async Task<IActionResult> Index(string searchString, int typeSearch = 1)
         {
             IEnumerable<Contact> result = await this._repository.GetAllContactsAsync();
-            if (!string.IsNullOrEmpty(searchString) && tipoBusca == 1)
+            if (!string.IsNullOrEmpty(searchString) && typeSearch == 1)
             {
                 result = await this._repository.GetContactsByNameAsync(searchString);
             }
-            else if (!string.IsNullOrEmpty(searchString) && tipoBusca == 2)
+            else if (!string.IsNullOrEmpty(searchString) && typeSearch == 2)
             {
                 result = await this._repository.GetContactsByPhoneAsync(searchString);
             }
@@ -92,22 +93,41 @@ namespace ContactManager.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(ContactDto contactDto)
+        public ActionResult Edit(ContactDto contactDto, string submitButton)
         {
             Contact contactResult = this._repository.GetContactById(contactDto.Id);
             if (contactResult == null)
             {
                 return this.BadRequest("Contato não encontrado.");
             }
-
-            Contact contact = this._mapper.Map<Contact>(contactDto);
-
-            this._repository.Update(contact);
-            if (this._repository.SaveChanges())
+            switch (submitButton)
             {
-                return this.RedirectToAction("Index");
+                case "New Telephone":
+                    {
+                        contactDto.Telephones.Add(null);
+                        return this.View(contactDto);
+                    }
+                case "Save changes":
+                    {
+                        Contact contact = this._mapper.Map<Contact>(contactDto);
+
+                        foreach (Telephone item in contact.Telephones.ToList())
+                        {
+                            if (item.Number == null)
+                            {
+                                contact.Telephones.Remove(item);
+                            }
+                        }
+
+                        this._repository.Update(contact);
+                        if (this._repository.SaveChanges())
+                        {
+                            return this.RedirectToAction("Index");
+                        }
+                        break;
+                    }
             }
-            return this.BadRequest("Contato não atualizado.");
+            return this.View(contactDto);
         }
 
         public ActionResult Delete(int id)

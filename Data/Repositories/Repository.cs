@@ -65,7 +65,8 @@ namespace ContactManager.Data.Repositories
 
             query = query.AsNoTracking()
                          .OrderBy(contact => contact.Id)
-                         .Where(a => a.Name.ToUpper().Contains(Name.ToUpper()));
+                         .Where(a => a.Name.ToUpper().Contains(Name.ToUpper()) ||
+                                     a.LastName.ToUpper().Contains(Name.ToUpper()));
 
             return await query.ToListAsync();
         }
