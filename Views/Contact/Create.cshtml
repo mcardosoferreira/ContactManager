@@ -99,13 +99,3 @@
 }
 <div>
 </div>
-<script type="text/javascript" src="../../Scripts/jquery-1.5.1.min.js"></script>
-<script type="text/javascript">
-// <![CDATA[
-        function addRow() {
-            //copy the table row and clear the value of the input, then append the row to the end of the table
-            $("#formNumber:first").clone().find("input").each(function () {
-                $(this).val('');
-            }).end().appendTo("#formNumber");
-        }
-// ]]></script>
