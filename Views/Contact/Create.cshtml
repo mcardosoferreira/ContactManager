@@ -1,11 +1,11 @@
 ﻿
-@model ContactManager.Dtos.ContactDto
+@model ContactManager.Infrastructure.DataContracts.ContactDto
 @{
     ViewData["Title"] = "Create";
 }
 
 <h1>Novo Contato</h1>
-
+<hr />
 @using (Html.BeginForm("Create", "Contact", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()

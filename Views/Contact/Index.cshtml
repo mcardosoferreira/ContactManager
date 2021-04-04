@@ -1,8 +1,9 @@
-﻿@model IEnumerable<ContactManager.Dtos.ContactDto>
+﻿@model IEnumerable<ContactManager.Infrastructure.DataContracts.ContactDto>
 @{
-    ViewBag.Title = "TabelaForeach";
+    ViewBag.Title = "Index";
 }
 <h2>Contact List</h2>
+<hr />
 <p>
     @Html.ActionLink("Create New Contact", "Create", "Contact", new { @class = "btn btn-success" })
 </p>
@@ -10,7 +11,7 @@
     <fieldset data-role="controlgroup">
     <span>
         <input type="text" name="SearchString" />
-        <input type="submit" value="Search" />
+        <input type="submit" value="Search"  class="btn btn-primary"/>
         by: 
         <input type="radio" name="TypeSearch" id="radio-choice-1" value="1">
         <label for="radio-choice-1">Name</label>

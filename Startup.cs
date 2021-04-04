@@ -1,6 +1,8 @@
 using AutoMapper;
 using ContactManager.Data.Context;
 using ContactManager.Data.Repositories;
+using ContactManager.Infrastructure.IoC.Profiles;
+using ContactManager.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -27,12 +29,13 @@ namespace ContactManager
             services.AddControllers()
                    .AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddAutoMapper(typeof(ContactManagerProfile).Assembly);
 
             services.AddDbContext<ContactManagerContext>(
                     context => context.UseSqlite(this.Configuration.GetConnectionString("Default"))
                 );
             services.AddScoped<IRepository, Repository>();
+            services.AddScoped<IContactsService, ContactsService>();
 
         }
 

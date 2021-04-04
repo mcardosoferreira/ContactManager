@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using ContactManager.Data.Repositories;
-using ContactManager.Dtos;
-using ContactManager.Models;
+using ContactManager.Domain.Models;
+using ContactManager.Infrastructure.DataContracts;
+using ContactManager.Infrastucture.Internacionalization;
+using ContactManager.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,49 +13,27 @@ namespace ContactManager.Controllers
 {
     public class ContactController : Controller
     {
-
         public readonly IRepository _repository;
         public readonly IMapper _mapper;
+        public readonly IContactsService _contactsService;
 
-        public ContactController(IRepository repository, IMapper mapper)
+        public ContactController(IRepository repository, IMapper mapper, IContactsService contactsService)
         {
             this._mapper = mapper;
             this._repository = repository;
+            this._contactsService = contactsService;
         }
 
-        public async Task<IActionResult> Index(string searchString, int typeSearch = 1)
+        public async Task<IActionResult> Index(string? searchString, int typeSearch = 1)
         {
-            IEnumerable<Contact> result = await this._repository.GetAllContactsAsync();
-            if (!string.IsNullOrEmpty(searchString) && typeSearch == 1)
-            {
-                result = await this._repository.GetContactsByNameAsync(searchString);
-            }
-            else if (!string.IsNullOrEmpty(searchString) && typeSearch == 2)
-            {
-                result = await this._repository.GetContactsByPhoneAsync(searchString);
-            }
-            IEnumerable<ContactDto> contactResult = this._mapper.Map<IEnumerable<ContactDto>>(result);
-            return this.View(contactResult);
-        }
-
-        [HttpGet("{id}")]
-        public IActionResult GetById(int id)
-        {
-            Contact contact = this._repository.GetContactById(id);
-            if (contact == null)
-            {
-                return this.BadRequest("Contato não encontrado.");
-            }
-
-            ContactDto contactResult = this._mapper.Map<ContactDto>(contact);
-            return this.Ok(contactResult);
+            IEnumerable<ContactDto> contacts = await this._contactsService.GetAllAsync(searchString, typeSearch);
+            return this.View(contacts);
         }
         public ActionResult Create()
         {
             var model = new ContactDto();
             return this.View(model);
         }
-
 
         [HttpPost]
         public ActionResult Create(ContactDto contact, string submitButton)
@@ -86,7 +66,7 @@ namespace ContactManager.Controllers
             Contact contactResult = this._repository.GetContactById(id);
             if (contactResult == null)
             {
-                return this.BadRequest("Contato não encontrado.");
+                return this.NotFound(Messages.CONTACT_NOT_FOUND);
             }
             ContactDto contactDto = this._mapper.Map<ContactDto>(contactResult);
             return this.View(contactDto);
@@ -98,7 +78,7 @@ namespace ContactManager.Controllers
             Contact contactResult = this._repository.GetContactById(contactDto.Id);
             if (contactResult == null)
             {
-                return this.BadRequest("Contato não encontrado.");
+                return this.NotFound("Contato não encontrado.");
             }
             switch (submitButton)
             {
@@ -136,7 +116,7 @@ namespace ContactManager.Controllers
             Contact contact = this._repository.GetContactById(id);
             if (contact == null)
             {
-                return this.BadRequest("Contato não encontrado.");
+                return this.NotFound("Contato não encontrado.");
             }
             ContactDto contactDto = this._mapper.Map<ContactDto>(contact);
 
@@ -149,7 +129,7 @@ namespace ContactManager.Controllers
             Contact contact = this._repository.GetContactById(id);
             if (contact == null)
             {
-                return this.BadRequest("Contato não encontrado.");
+                return this.NotFound("Contato não encontrado.");
             }
 
             this._repository.Delete(contact);
@@ -157,7 +137,7 @@ namespace ContactManager.Controllers
             {
                 return this.RedirectToAction("Index");
             }
-            return this.BadRequest("Contado não foi deletado.");
+            return this.BadRequest("Contato não foi deletado.");
         }
 
         public ActionResult Details(int id)
@@ -166,12 +146,10 @@ namespace ContactManager.Controllers
             Contact contact = this._repository.GetContactById(id);
             if (contact == null)
             {
-                return this.BadRequest("Contato não encontrado.");
+                return this.NotFound("Contato não encontrado.");
             }
 
             ContactDto contactDto = this._mapper.Map<ContactDto>(contact);
-
-
 
             return this.View(contactDto);
         }
