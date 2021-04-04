@@ -48,7 +48,7 @@ namespace ContactManager.Controllers
             ContactDto contactResult = this._mapper.Map<ContactDto>(contact);
             return this.Ok(contactResult);
         }
-        public ActionResult Create(string[] DynamicTextBox)
+        public ActionResult Create()
         {
             var model = new ContactDto();
             return this.View(model);
