@@ -4,7 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Novo Contato</h1>
+<h1>New Contact</h1>
 <hr />
 @using (Html.BeginForm("Create", "Contact", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
@@ -91,11 +91,26 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" name="submitButton" value="Salvar Contato" class="btn btn-success" />
-                @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-danger" })
+                <input type="submit" name="submitButton" value="Save Contact" class="btn btn-success" />
+                @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-danger" })
             </div>
         </div>
     </div>
 }
 <div>
 </div>
+<script>
+    var container = $('#listofBudgets');
+    var url = '@Url.Action("Duplicate", "Budget")';
+    var textbox = $('#Duplicatename');
+// handle the click event of the links
+    $('.duplicate').click(function() {
+    // get the values to be sent to the method
+    var id = $(this).data('id');
+    var type = $(this).data('type');
+    var name = textbox.val();
+    $.get(url, { id: id, type: type, dupName: name }, function(data) {
+        container.html(data); // update the DOM
+    });
+});
+</script>

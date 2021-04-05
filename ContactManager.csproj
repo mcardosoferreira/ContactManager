@@ -22,7 +22,6 @@
     <ProjectReference Include="..\ContactManager.Data\ContactManager.Data.csproj" />
     <ProjectReference Include="..\ContactManager.Domain\ContactManager.Domain.csproj" />
     <ProjectReference Include="..\ContactManager.Infrastructure.IoC\ContactManager.Infrastructure.IoC.csproj" />
-    <ProjectReference Include="..\ContactManager.Infrastucture.Internacionalization\ContactManager.Infrastucture.Internacionalization.csproj" />
     <ProjectReference Include="..\ContactManager.Services\ContactManager.Services.csproj" />
   </ItemGroup>
 
